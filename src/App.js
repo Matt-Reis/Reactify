@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import './Button.css';
 import TaskInput from './TaskInput';
 import Button from './Button';
 import TimeDropDown from './TimeDropDown';
@@ -13,6 +12,8 @@ function App() {
   const [showTask, setShowTask] = useState(false); // State to toggle the task input
   const [showProdReport, setShowProdReport] = useState(false); // State to toggle the report
   const [tasks, setTasks] = useState([]); // State to store the list of tasks
+  const [selectedStartTime, setSelectedStartTime] = useState(''); //Store the selected start time for task input
+  const [selectedEndTime, setSelectedEndTime] = useState(''); //Store the selected end time for task input
 
   const handleTimerButtonClick = () => {
     setShowTimer(!showTimer); // Toggle the timer visibility
@@ -31,39 +32,54 @@ function App() {
   };
 
   return (
-    <div className='App'>
-      <h1>Reactify</h1>
-      <h2>
-        <Button label="Timer" onClick={handleTimerButtonClick} /> {/* Button with event handler attached */}
-        <Button label="Productivity Report" onClick={handleProdReportButtonClick} /> {/* Button with event handler attached */}
-      </h2>
-      <h3>
-        <TaskInput onAddTask={addTask} /> {/* Conditionally render TaskInput */}
-        <div className="current-date-time"><CurrentDateTime /></div>
-      </h3>
-      <h4>
-        <TimeDropDown />
-      </h4>
-      {showTimer && ( // Conditionally render the Timer component
-        <div>
-          <h5>Timer</h5>
-          <TimerButton />
+      <div className='App'>
+        
+        <section id ="up"></section> {/*These are the colored blobs and the related physics for the animated gradient background*/}
+        <section id ="down"></section>
+        <section id ="left"></section>
+        <section id ="right"></section>
+
+        <div className='AppTop'> {/*I wanted to keep the top of the application container seperate from the todays schedule area */}
+        <h1 style={{ textDecoration: 'underline' }}>Reactify</h1> {/* Logo */}
+        
+        <h2>
+          <Button label="Timer" onClick={handleTimerButtonClick} /> {/* Button with event handler attached */}
+          <Button label="Productivity Report" onClick={handleProdReportButtonClick} /> {/* Button with event handler attached */}
+        </h2>
+
+        <h3>
+          <TaskInput onAddTask={addTask} /> {/* Conditionally render TaskInput */}
+          <div className="current-date-time"><CurrentDateTime /></div>
+        </h3>
+
+        <h4>
+        <TimeDropDown /> {/*This component contains the start time and end time headers, as well as the select a time drop down menues*/}
+        </h4>
         </div>
-      )}
-      <div>
-        <h5 style={{ textDecoration: 'underline' }}>Today's Schedule</h5>
-        <ul style={{color: 'white'}}>
-          {tasks.map((task, index) => (
-            <li key={index}>{task}</li>
-          ))}
-        </ul>
-        {showProdReport && ( // Conditionally render the Productivity Report component
-          <div>
-            <ProdRepoButton />
+
+
+        
+        {showTimer && ( // Conditionally render the Timer component
+          <div className='Timer'>
+            <h5 style={{ textDecoration: 'underline' }}>Timer</h5> {/*Underlined header*/}
+            <TimerButton />
           </div>
         )}
-      </div>
-    </div>
+
+        <div className='Schedule'>
+          <h5 style={{ textDecoration: 'underline' }}>Today's Schedule</h5> {/*Underlined header*/}
+          <ul style={{color: 'white'}}> {/*create a unordered list with an inline decoration for white text*/}
+            {tasks.map((task, index) => ( /*tasks.map will iterate through the tasks array, this is more efficient than the traditional for loop*/
+              <li key={index}>{task}{selectedStartTime}{selectedEndTime}</li>
+            ))}
+          </ul>
+          {showProdReport && ( // Conditionally render the Productivity Report component
+            <div className='ProdReport'>
+              <ProdRepoButton />
+            </div>
+          )}  
+        </div>
+    </div>  
   );
 }
 

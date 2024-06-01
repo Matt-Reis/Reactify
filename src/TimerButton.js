@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Timer.css';
+import './App.css';
 
 const TimerButton = () => {
   const [seconds, setSeconds] = useState(0);
@@ -32,7 +32,7 @@ const TimerButton = () => {
 
   return (
     <div>
-      <div style={{ color: 'white'}}>{seconds}s</div>
+      <div style={{textAlign: 'center', color: 'white'}}>{seconds}s</div>
       <button onClick={handleStart}>Start</button>
       <button onClick={handlePause}>Pause</button>
       <button onClick={handleReset}>Reset</button>
