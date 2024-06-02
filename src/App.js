@@ -6,10 +6,11 @@ import TimeDropDown from './TimeDropDown';
 import CurrentDateTime from './CurrentDateTime';
 import TimerButton from './TimerButton';
 import ProdRepoButton from './ProdRepoButton';
+import logo from './assets/reactify-logo-white.png';
+
 
 function App() {
   const [showTimer, setShowTimer] = useState(false); // State to toggle the timer
-  const [showTask, setShowTask] = useState(false); // State to toggle the task input
   const [showProdReport, setShowProdReport] = useState(false); // State to toggle the report
   const [tasks, setTasks] = useState([]); // State to store the list of tasks
   const [selectedStartTime, setSelectedStartTime] = useState(''); //Store the selected start time for task input
@@ -19,18 +20,19 @@ function App() {
     setShowTimer(!showTimer); // Toggle the timer visibility
   };
 
-  const handleAddTaskButtonClick = () => {
-    setShowTask(!showTask); // Toggle the task input visibility
-  };
-
   const handleProdReportButtonClick = () => {
     setShowProdReport(!showProdReport); // Toggle the productivity report visibility
   };
 
   const addTask = (task) => {
-    setTasks([...tasks, task]); // Add the new task to the list of tasks
+    const newTask = {
+        task: task,
+        selectedStartTime: selectedStartTime,
+        selectedEndTime: selectedEndTime
+    };
+    setTasks([...tasks, newTask]);
   };
-
+  
   return (
       <div className='App'>
         
@@ -40,7 +42,9 @@ function App() {
         <section id ="right"></section>
 
         <div className='AppTop'> {/*I wanted to keep the top of the application container seperate from the todays schedule area */}
-        <h1 style={{ textDecoration: 'underline' }}>Reactify</h1> {/* Logo */}
+
+          <img src={logo} alt="Reactify Logo" style={{width: '145px', height: '75px', marginTop: '15px'}}/> {/* Logo */}
+
         
         <h2>
           <Button label="Timer" onClick={handleTimerButtonClick} /> {/* Button with event handler attached */}
@@ -53,7 +57,11 @@ function App() {
         </h3>
 
         <h4>
-        <TimeDropDown /> {/*This component contains the start time and end time headers, as well as the select a time drop down menues*/}
+        <TimeDropDown
+          selectedStartTime={selectedStartTime}
+          setSelectedStartTime={setSelectedStartTime}
+          selectedEndTime={selectedEndTime}
+          setSelectedEndTime={setSelectedEndTime}/> {/*This component contains the start time and end time headers, as well as the select a time drop down menues, I raised state from the TimeDropDown component due to performance issues*/}
         </h4>
         </div>
 
@@ -70,7 +78,7 @@ function App() {
           <h5 style={{ textDecoration: 'underline' }}>Today's Schedule</h5> {/*Underlined header*/}
           <ul style={{color: 'white'}}> {/*create a unordered list with an inline decoration for white text*/}
             {tasks.map((task, index) => ( /*tasks.map will iterate through the tasks array, this is more efficient than the traditional for loop*/
-              <li key={index}>{task}{selectedStartTime}{selectedEndTime}</li>
+              <li key={index}>{task.task} {task.selectedStartTime } - {task.selectedEndTime}</li>
             ))}
           </ul>
           {showProdReport && ( // Conditionally render the Productivity Report component
@@ -84,4 +92,3 @@ function App() {
 }
 
 export default App;
-

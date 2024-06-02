@@ -23,6 +23,7 @@ body, html {
   z-index: 999; /* Ensure UI elements are on top */
 }
 
+
 #up {
   position: fixed;
   height: 800px;

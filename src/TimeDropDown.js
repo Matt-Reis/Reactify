@@ -14,17 +14,16 @@ const generateTimeOptions = () => {
     return times;
 };
 
-const TimeDropDown = () => {
-    const [selectedStartTime, setSelectedStartTime] = useState('');
-    const [selectedEndTime, setSelectedEndTime] = useState('');
+const TimeDropDown = ({ selectedStartTime, setSelectedStartTime, selectedEndTime, setSelectedEndTime }) => {
 
     const handleStartTimeChange = (event) => {
-        setSelectedStartTime(event.target.value);
-    };
-
-    const handleEndTimeChange = (event) => {
-        setSelectedEndTime(event.target.value);
-    };
+        setSelectedStartTime(event.target.value); // Call the callback function with the new start time
+      };
+      
+      const handleEndTimeChange = (event) => {
+        setSelectedEndTime(event.target.value); // Call the callback function with the new end time
+      };
+      
 
     const timeOptions = generateTimeOptions();
 
@@ -38,7 +37,7 @@ const TimeDropDown = () => {
                 ))}
             </select>
             
-            <label htmlFor='end-time'>End Time: </label>
+            <label htmlFor='end-time'> End Time: </label>
             <select id='end-time' value={selectedEndTime} onChange={handleEndTimeChange}>
                 <option value="">Select a time:</option>
                 {timeOptions.map((time, index) => (
