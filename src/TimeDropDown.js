@@ -23,7 +23,6 @@ const TimeDropDown = ({ selectedStartTime, setSelectedStartTime, selectedEndTime
       const handleEndTimeChange = (event) => {
         setSelectedEndTime(event.target.value); // Call the callback function with the new end time
       };
-      
 
     const timeOptions = generateTimeOptions();
 

@@ -5,8 +5,8 @@ import Button from './Button';
 import TimeDropDown from './TimeDropDown';
 import CurrentDateTime from './CurrentDateTime';
 import TimerButton from './TimerButton';
-import ProdRepoButton from './ProdRepoButton';
 import logo from './assets/reactify-logo-white.png';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 
 function App() {
@@ -24,15 +24,26 @@ function App() {
     setShowProdReport(!showProdReport); // Toggle the productivity report visibility
   };
 
-  const addTask = (task) => {
+  const addTask = (task, startTime, endTime) => {
     const newTask = {
         task: task,
         selectedStartTime: selectedStartTime,
-        selectedEndTime: selectedEndTime
+        selectedEndTime: selectedEndTime,
     };
     setTasks([...tasks, newTask]);
   };
-  
+
+  const data = [
+    { name: 'Group 1', value: 682 },
+    { name: 'Group 2', value: 125 },
+    { name: 'Group 3', value: 987 },
+    { name: 'Group 4', value: 452 },
+    { name: 'Group 5', value: 597 },
+    { name: 'Group 6', value: 269 },
+  ];
+
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f0e', '#ff7373', '#888888'];
+
   return (
       <div className='App'>
         
@@ -64,8 +75,6 @@ function App() {
           setSelectedEndTime={setSelectedEndTime}/> {/*This component contains the start time and end time headers, as well as the select a time drop down menues, I raised state from the TimeDropDown component due to performance issues*/}
         </h4>
         </div>
-
-
         
         {showTimer && ( // Conditionally render the Timer component
           <div className='Timer'>
@@ -78,12 +87,30 @@ function App() {
           <h5 style={{ textDecoration: 'underline' }}>Today's Schedule</h5> {/*Underlined header*/}
           <ul style={{color: 'white'}}> {/*create a unordered list with an inline decoration for white text*/}
             {tasks.map((task, index) => ( /*tasks.map will iterate through the tasks array, this is more efficient than the traditional for loop*/
-              <li key={index}>{task.task} {task.selectedStartTime } - {task.selectedEndTime}</li>
+              <li key={index}>{task.task} || {task.selectedStartTime } - {task.selectedEndTime}</li>
             ))}
           </ul>
+
           {showProdReport && ( // Conditionally render the Productivity Report component
             <div className='ProdReport'>
-              <ProdRepoButton />
+            <h5 style={{ textDecoration: 'underline' }}>Productivity Report - BETA IN TESTING</h5>
+            <PieChart width={700} height={235}>
+              <Pie
+                dataKey="value"
+                startAngle={360}
+                endAngle={0}
+                data={data}
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+                label
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                ))}
+              </Pie>
+            </PieChart>
             </div>
           )}  
         </div>
